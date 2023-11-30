@@ -18,7 +18,9 @@ class Dog(name: String): Pet(name) {
 }
 
 class PetContainer<T: Pet> {
-    private val petList = mutableListOf<T>()
+    companion object {
+        private val petList = mutableListOf<Pet>()
+    }
 
     fun putIntoContainer(pet: T) {
         petList.add(pet)
@@ -27,7 +29,7 @@ class PetContainer<T: Pet> {
     fun hearVoice(): T {
         val randomPet = petList.random()
         println("A pet's voice came through the container: $randomPet. Can you guess who this is?")
-        return randomPet
+        return randomPet as T
     }
 }
 fun main() {
@@ -42,7 +44,7 @@ fun main() {
     println("Enter 0 if a dog and 1 if a cat: ")
     val guess = readlnOrNull()?.toIntOrNull()
 
-    if ((guess == 0) and (randomPet is Dog) or (guess == 1) and (randomPet is Cat)) {
+    if (((guess == 0) and (randomPet is Dog)) or ((guess == 1) and (randomPet is Cat))) {
         println("You won! Congratulations!")
     } else {
         println("You've lost :(")
